@@ -1,0 +1,114 @@
+<!DOCTYPE html> 
+<html>
+
+<head>
+    <meta charset="UTF-8">
+  <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  
+  
+  
+    <script type="text/javascript">
+
+  // 取得網址裡的參數 
+  function GetUrlVar(VarName) 
+  {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regexS = "[\\?&]" + VarName + "=([^&#]*)";
+    var regex = new RegExp(regexS);
+    var results = regex.exec(window.location.href);
+    if (results == null)
+       return "";
+    else
+    return results[1];
+  }
+
+    
+    // 要先取得網址裡的路徑起點終點經緯度參數 
+    
+
+  
+    </script>
+  
+</head> 
+
+<body> 
+
+  
+  
+  <div class="row">
+    <div class="col s12 m6 l6" id="demo">
+ </div>
+    <div class="col s12 m6 l6 a" id="text">
+    </div>
+      <div class="col s12 m6 l6 a" id="map">
+    </div>
+
+    
+  </div>
+ 
+
+ <script>
+        // pic=["https://www.findcoupon.tw/uploads/menu/1000/1081_1.jpg",
+        //      "https://twcoupon.com/images/menu/p_chingshin.jpg",
+        //      "https://pic.pimg.tw/boda02/1557296155-3690005796_wn.jpg",
+        //      "https://1.bp.blogspot.com/-_QaH_2DfHYc/YK5K4yztWGI/AAAAAAAAaFk/c9QdimW_A1kxWpNcZTpHrkgZM56yveyywCLcBGAsYHQ/s2048/%25E3%2580%2590%25E8%25BF%25B7%25E5%25AE%25A2%25E5%25A4%258F%25E3%2580%25912021%25E8%258F%259C%25E5%2596%25AE%25E5%2583%25B9%25E7%259B%25AE%25E8%25A1%25A8.jpg",
+        //      "https://achingfoodie.tw/wp-content/uploads/20210704122918_94.jpg",
+        //      "https://whityeat.com/wp-content/uploads/20210503033243_69.jpg"
+        //     ];
+      
+        // txt=["CoCo都可茶飲是目前在大陸第一大連鎖茶飲品牌，至2013年12月底為止在全球超過1500家門市，從台灣、中國華北的北京市到華南的福建省等各主要城市、香港灣仔、泰國、印尼、馬來西亞、南非及美國紐約、洛杉磯，都可以喝到CoCo都可茶飲提供的新鮮現作優質飲品。其中CoCo都可茶飲獨具的教育訓練、門市稽核系統、產品創新的速度及專業管理團隊，是我們從台灣一路發展壯大，成為一個國際化連鎖企業的關鍵因素。 我們的戰略地圖，已從臺灣市場成功打入兩岸三地及美國東岸，現正加速拓展到世界其它地區，並有計劃前進東北亞、東南亞、中東、美加、紐澳等區域。國內資本額1億，海外總資本額1千5百萬美金。相信不久的將來，將有機會一起見證CoCo都可茶飲領頭，帶起華人茶飲橫掃世界的風潮。",
+        // "「清心福全」於1987年創始於台南市，美味茶飲名聞遐邇，自1991年開放加盟，目前營業門市遍及全台，已逾900家，為台灣最大連鎖手搖茶飲體系之一，並備有專屬倉儲中心與物流車隊。我們秉持「誠信」、「用心」、「創新」、「惜福」之企業精神，力求務實經營、嚴謹管理、穩健成長、永續發展，致力深耕台灣，弘揚台灣茶飲文化。「清心福全」強調顧客至上、品管優先、服務第一，講究真材實料、貨真價實，訂定標準作業程序，始終堅持以「手工」與「客製化」的模式沖泡、調製飲品。我們嚴選優質茶葉、食材與包材，並逐批或定期送SGS檢驗，落實食品安全衛生之自主管理，更不斷精益求精、推陳出新，以求歷久彌新、更上層樓。",
+        // "50嵐綠茶連鎖體系於1994年成立， 由創辦人馬先生自台南發跡， 進而自高雄區、中區(含雲、嘉)、台北區、桃竹苗區陸續拓點。 50嵐皆採取全省分區經營模式 ，因各地區之營運成本(例租金、人事等) 與風俗民情不同， 故有不同之商品定價與經營方式，此乃與其他品牌不同之處。",
+        // "迷克夏（英語：Milkshop），又稱迷克夏綠光牧場主題飲品，公司全名為亞享實業有限公司。是一個起源於臺灣臺南市佳里區的連鎖飲料店品牌。成立於2007年，創辦人兼董事長為林建燁[1]。目前全台超過200間門市。",
+        // "春水堂實業股份有限公司，簡稱春水堂人文茶館或春水堂，是一家源自臺灣臺中的連鎖茶館。主要商品為珍珠奶茶及泡沫紅茶等各式調和茶飲，並推廣半發酵茶葉，提倡雙杯式飲法及色香味三段品茗法。其與翰林茶館各自宣稱先後研發珍珠奶茶。",
+        // "萬波每一步都堅持從茶園到茶店產地直送。 從摘選，焙茶，補火，煮製，釋放難得一見的經典茶香，萬波將40 年代的匠人精神發揮在手搖茶店中。 對於萬波來說，遵循古法「煮茶」才能詮釋真正的茶的美學，掌握特性與適當的沖泡手法，並讓精挑細選的配料建築在古早味之中，突顯出不同茶品其獨特的口感與香氣。"
+        //     ];
+     
+        // map=["https://maps.google.com.tw/maps?f=q&hl=zh-TW&q=24.136028263778368, 120.68766482886312&z=16&t=q&output=embed",
+        //      "https://maps.google.com.tw/maps?f=q&hl=zh-TW&q=24.129920686569687, 120.68297094440693&z=16&t=q&output=embed",
+        //      "https://maps.google.com.tw/maps?f=q&hl=zh-TW&q=24.122477799698366, 120.68007995323265&z=16&t=q&output=embed",
+        //      "https://maps.google.com.tw/maps?f=q&hl=zh-TW&q=24.14110596232563, 120.68307462569453&z=16&t=q&output=embed",
+        //      "https://maps.google.com.tw/maps?f=q&hl=zh-TW&q=24.13620279410921, 120.68777246728654&z=16&t=q&output=embed",
+        //      "https://maps.google.com.tw/maps?f=q&hl=zh-TW&q=24.114568839760615, 120.66661548990221&z=16&t=q&output=embed"
+        //     ];
+     
+ var X = decodeURIComponent(GetUrlVar('id'));
+ var i = Number(X);
+      
+    document.getElementById("demo").innerHTML = "<img src='" + pic[i] + "' width='100%'/>";
+     document.getElementById("text").innerHTML = txt[i];
+      document.getElementById("map").innerHTML ="<iframe src='" + map[i] + "'></iframe>";
+ 
+  </script>
+    
+    <footer class="e1bee7 purple lighten-4">
+          <div class="container">
+            <div class="row">
+              <div class="col l6 s12">
+                <h5 class="white-text">歡迎光臨</h5>
+                <p class="grey-text text-lighten-4">To be continue...</p>
+                <div class="col s12 m4 l6"><img src="https://image.shutterstock.com/image-vector/welcome-sign-colorful-bunting-flags-260nw-500112742.jpg" width="340%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="footer-copyright">
+            <div class="container">
+            © 2021 Copyright 
+            </div>
+          </div>
+    </footer>
+
+  </body>
+
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  
+  <!-- Materialize CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- 利用Google Visualization讀取Google Sheet https://www.labnol.org/code/google-sheet-d3js-visualization-200608 -->
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <title>Restaurant Menu</title>
+
+
+  <style>
+    /* Hero Section Styling */
+    .hero {
+      background-image: url('https://source.unsplash.com/1600x900/?restaurant,food');
+      background-size: cover;
+      background-position: center;
+      height: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Fix image size and maintain consistency */
+    .card-image {
+      height: 200px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Ensure that the content inside the card takes the remaining space */
+    .card-content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Optional: Adjust the text styles if needed */
+    .card-content h5 {
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav>
+    <div class="nav-wrapper grey darken-4">
+      <a href="#" class="brand-logo center">Gourmet Bistro</a>
+      <ul id="nav-mobile" class="left hide-on-med-and-down">
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#reservation">Reserve</a></li>
+        <li><a href="#contact">Contact Us</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="hero">
+    <h1>Welcome to Gourmet Bistro</h1>
+  </div>
+
+  <!-- YouTube Video Embed Section -->
+<div class="container">
+  <h3 class="center-align">Watch Our Special Video</h3>
+  <div class="video-container">
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/GIwEnk3Wq2I?si=x9msCSJpITL6yEBZ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+  </div>
+</div>
+
+  
+  <!-- Menu Section -->
+  <!-- <div id="menu" class="container">
+    <h2 class="center-align">Our Menu</h2>
+    <div class="row">
+      <div class="col s12 m6 l4">
+        <div class="card">
+          <div class="card-image">
+            <img src="image/mozzarella.jpg" alt="Fresh Margherita Pizza">
+          </div>
+          <div class="card-content">
+            <h5>Margherita Pizza</h5>
+            <p>A classic Italian pizza with fresh basil, mozzarella, and tomato sauce.</p>
+            <p>Price: $12.99</p>
+            <a href="menu.html">More about the menu</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col s12 m6 l4">
+        <div class="card">
+          <div class="card-image">
+            <img src="image/Spaghetti Carbonara.jpg" alt="Creamy Spaghetti Carbonara">
+          </div>
+          <div class="card-content">
+            <h5>Spaghetti Carbonara</h5>
+            <p>Creamy spaghetti with pancetta, parmesan, and a hint of black pepper.</p>
+            <p>Price: $13.99</p>
+            <a href="menu.html">More about the menu</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col s12 m6 l4">
+        <div class="card">
+          <div class="card-image">
+            <img src="image/Caesar Salad.jpg" alt="Classic Caesar Salad">
+          </div>
+          <div class="card-content">
+            <h5>Caesar Salad</h5>
+            <p>Crisp romaine lettuce with Caesar dressing, croutons, and parmesan cheese.</p>
+            <p>Price: $10.99</p>
+            <a href="menu.html">More about the menu</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <script src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(init);
+
+    let title = [];
+    let image = [];
+    let intro = [];
+
+    function init() {
+      var url =
+        'https://docs.google.com/spreadsheets/d/1JeMh0SH3YS8jOfUAnJxhnQ2BWAhFG9iBCp1XEGdE6Ok/gviz/tq?sheet=ItalianRestaurant';
+      var query = new google.visualization.Query(url);
+      query.setQuery('select *');
+      query.send(processSheetsData);
+    }
+
+    function processSheetsData(response) {
+      var data = response.getDataTable();
+      var rows = data.getNumberOfRows();
+
+      for (var r = 1; r < rows; r++) {
+        title[r - 1] = data.getFormattedValue(r, 1);
+        image[r - 1] = data.getFormattedValue(r, 2);
+        intro[r - 1] = data.getFormattedValue(r, 3);
+      }
+
+      // Enable button after data is loaded
+      document.getElementById('loadButton').style.display = 'block';
+    }
+
+    function f() {
+      let text = '';
+      for (let i = 0; i < title.length; i++) {
+        let introText = intro[i] ? intro[i].slice(0, 80) + '.....' : '';
+        text += `<div class="col s12 m6 l3">
+                   <div class="card">
+                     <div class="card-image">
+                       <img src="${image[i]}" />
+                       <span class="card-title">${title[i]}</span>
+                     </div>
+                     <div class="card-content">
+                       <p>${introText}</p>
+                     </div>
+                     <div class="card-action">
+                       <a href="response.html?pid=${i}">This is a link</a>
+                     </div>
+                   </div>
+                 </div>`;
+      }
+      document.getElementById('demo').innerHTML += text;
+    }
+  </script>	  
+ <a href="javascript:f();">按這裡</a>  
+
+
+
+
+
+
+
+  
+
+
+<script type="text/javascript">
+    function formresponse() {
+     var m = document.forms["form1"]["name"].value;
+     var d = document.forms["form1"]["response"].value;
+     if (m==null || m=="")
+        {
+      alert("name不可為空白!");
+      return false;
+        }
+     else if (d==null || d=="")
+        {
+      alert("response不可為空白!");
+      return false;
+        }
+     else
+        {
+            // https://docs.google.com/forms/d/e/1FAIpQLSeyV7cQB95TtCDe_9etU1OjpTsuJrLgKySZnV1mk6GAxNKW-w/viewform?usp=pp_url&entry.1196881293=tony&entry.526714013=haha
+      var MySubmit = "https://docs.google.com/forms/d/e/1FAIpQLSeyV7cQB95TtCDe_9etU1OjpTsuJrLgKySZnV1mk6GAxNKW-w/formResponse?usp=pp_url&entry.1196881293=" + m + "&entry.526714013=" + d;
+      var NewOpen = window.open(MySubmit);
+        }
+    
+    }
+    </script>
+    </head>
+
+    <body>
+     <form name="form1" action="javascript:formresponse();">
+      name: <input type="text" name="name"><br />
+      response: <input type="text" name="tel"><br />
+      <input type="submit" value="Submit">
+     </form>
+
+
+
+
+
+
+<!-- Footer Section -->
+  <footer id="contact" class="page-footer grey darken-3">
+    <div class="container">
+      <div class="row">
+        <div class="col s12 m6">
+          <h5 class="white-text">Gourmet Bistro</h5>
+          <p class="grey-text text-lighten-4">The best dining experience in the city!</p>
+        </div>
+        <div class="col s12 m6">
+          <h5 class="white-text">Contact Us</h5>
+          <p class="grey-text text-lighten-4">
+            <i class="material-icons left">phone</i> 0912345678<br>
+            <i class="material-icons left">email</i> info@gourmetbistro.com<br>
+            <i class="material-icons left">place</i> Taichung, 123 Main Street
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Materialize JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  <!-- Custom JavaScript -->
+  <script>
+    // Smooth scroll for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(event) {
+        event.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        window.scrollTo({
+          top: target.offsetTop - 64,
+          behavior: 'smooth',
+        });
+      });
+    });
+
+    // Initialize Materialize Select
+    document.addEventListener('DOMContentLoaded', function() {
+      const selects = document.querySelectorAll('select');
+      M.FormSelect.init(selects);
+    });
+  </script>
+</body>
+</html>

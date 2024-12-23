@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Comment</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- <link rel="stylesheet" href="Final.css"> -->
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        .title {
+            font-weight: bold;
+        }
+
+        .reply {
+            border: 2px solid rgba(0, 0, 0, 0.3);
+            border-radius: 7px;
+        }
+
+        .reply div {
+            position: relative;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .reply .user {
+            left: 5px;
+            /* font-size: 10px; */
+        }
+
+        .reply .comment {
+            left: 7px;
+        }
+    </style>
+    <script>
+        reverse = false
+        function formresponse() {
+            var m = document.forms["form1"]["Name"].value;
+            var d = document.forms["form1"]["Comment"].value;
+            if (m == null || m == "") {
+                alert("Name不可為空白!");
+                return false;
+            } else if (d == null || d == "") {
+                alert("Comment不可為空白!");
+                return false;
+            } else {
+                var MySubmit = "https://docs.google.com/forms/d/e/1FAIpQLSekR-eUQAnzrCb_3ulHIcJIK3xwcP18k_ZznDDr7Ru_ebTwKg/formResponse?entry.71597420=" + m + "&entry.928316273=" + d + "&submit=Submit";
+                // var MySubmit = "https://docs.google.com/forms/d/e/1FAIpQLSekR-eUQAnzrCb_3ulHIcJIK3xwcP18k_ZznDDr7Ru_ebTwKg/viewform?usp=pp_url&entry.71597420=" + m + "&entry.928316273=" + d + "&submit=Submit";
+                var NewOpen = window.open(MySubmit, "Google Charts", config = "height=1px, width=1px");
+                // var NewOpen = window.open(MySubmit)
+                // $("#trans").append(`<iframe src="${MySubmit}" frameborder="0" height="300px" width="100%"></iframe>`)
+                // NewOpen.close();
+                // window.location.reload("b.html");
+                setTimeout(() => {
+                    NewOpen.close();
+                    window.location.reload("b.html");
+                }, 1000);
+                // google.charts.setOnLoadCallback(init);
+            }
+        }
+        function GetUrlVar(VarName) {
+            name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+            var regexS = "[\\?&]" + VarName + "=([^&#]*)";
+            var regex = new RegExp(regexS);
+            var results = regex.exec(window.location.href);
+            if (results == null) return "";
+            else return results[1];
+        }
+        // var n = decodeURIComponent(GetUrlVar('id'));
+        // var QuertSet = "select * where A = " + n;
+        var QuerySet = "Select *"
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(init);
+        function init() {
+            // var url =
+            //     'https://docs.google.com/spreadsheets/d/1Sf8MdFRuaiCb4dxPtqblqEpMu7meLfjRdccyLsW5QXE/gviz/tq?sheet=工作表1';
+            var url =
+                'https://docs.google.com/spreadsheets/d/1Dx0_IRjEU9JyEAKwJ3M0qVF8ZwnD6TSke9MoKczrJgg/gviz/tq?sheet=表單回應1';
+            // var url = "https://docs.google.com/spreadsheets/d/1PiUVOLF1Rvq3IV3uCBsV6TDqtqki75gzirph-ias22A/edit?usp=sharing" 
+            var query = new google.visualization.Query(url);
+            query.setQuery(QuerySet);
+            query.send(processSheetsData);
+        }
+
+        function processSheetsData(response) {
+            var data = response.getDataTable();
+            var columns = data.getNumberOfColumns();
+            var rows = data.getNumberOfRows();
+            $("#cnt").html(`共${rows}則留言`)
+            // var str = "";
+            if (!reverse) {
+                for (var r = rows - 1; r >= 0; r--) {
+                    $("#demo").append(`<div class="reply">
+        <div class="user">
+            <h5>User: ${data.getFormattedValue(r, 1)}</h5><h6>${data.getFormattedValue(r, 0)}</h6>
+        </div>
+        <div class="comment">
+            ${data.getFormattedValue(r, 2)}
+        </div><br>
+    </div><br>`);
+
+                    // $("#demo").append(`<img src="${data.getFormattedValue(r, 3)}" height="217px" width="290px">`);
+
+                    // str += data.getFormattedValue(r, 0) + "(" + data.getFormattedValue(r, 1) + ")" + " 訂 " + data.getFormattedValue(r, 2) + " : " + data.getFormattedValue(r, 3) + "個 <br />";
+                }
+            } else {
+                for (var r = 0; r < rows; r++) {
+                    $("#demo").append(`<div class="reply">
+        <div class="user">
+            <h5>User: ${data.getFormattedValue(r, 1)}</h5><h6>${data.getFormattedValue(r, 0)}</h6>
+        </div>
+        <div class="comment">
+            ${data.getFormattedValue(r, 2)}
+        </div><br>
+    </div><br>`);
+                    // $("#demo").append(`<img src="${data.getFormattedValue(r, 3)}" height="217px" width="290px">`);
+
+                    // str += data.getFormattedValue(r, 0) + "(" + data.getFormattedValue(r, 1) + ")" + " 訂 " + data.getFormattedValue(r, 2) + " : " + data.getFormattedValue(r, 3) + "個 <br />";
+                }
+            }
+            // document.getElementById("demo").innerHTML = str;
+        }
+    </script>
+</head>
+
+<body>
+    <h5 class="title">加入討論！</h5>
+    <div class="row">
+        <form class="col s12" name="form1">
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="first_name" type="text" class="validate" name="Name">
+                    <label for="first_name">User Name</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea name="Comment" class="materialize-textarea"></textarea>
+                    <label for="Comment">Comment</label>
+                </div>
+            </div>
+        </form>
+        <a class="btn waves-effect waves-light" href="javascript:formresponse();">Submit</a>
+    </div>
+    <br>
+    <hr>
+    <h5 class="title">討論區</h5>
+    <h6 id="cnt"></h6><button id="nto" class="btn-small waves-effect waves-light">新到舊</button> <button id="otn"
+        class="btn-small waves-effect waves-light">舊到新</button><br><br>
+    <div class="row">
+        <div id="demo" class="col s12"></div>
+    </div>
+    <!-- <form name="form1" action="javascript:formresponse();">
+        Name: <br><input type="text" name="Name"><br />
+        Comment: <br><textarea name="Comment" id="" cols="30" rows="10"></textarea><br />
+        <input type="submit" value="Submit">
+    </form> -->
+    <!-- <br> -->
+
+</body>
+<script>
+    $("#nto").click("on", function () {
+        reverse = false
+        $("#demo").html("");
+        google.charts.setOnLoadCallback(init);
+    });
+    $("#otn").click("on", function () {
+        reverse = true
+        $("#demo").html("");
+        google.charts.setOnLoadCallback(init);
+    });
+</script>
+
+</html>

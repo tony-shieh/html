@@ -31,9 +31,9 @@
 
 
   // 這些陣列要移到所有function的外面，成為整體性變數
-  name = [];
+  title = [];
   image = [];
-  link = [];
+  intro = [];
 
 
   function init() {
@@ -42,7 +42,7 @@
     // 然後讓程式讀取 https://docs.google.com/spreadsheets/d/瀏覽器網址列上的網址擷取序號部分/gviz/tq?sheet=工作表名稱
     // 也就是將下列的 1cB6a4F4soIDf8zOovv47nnYhJs_KESJKrInGyjJT-FQ 更換成自己的檔案序號，以及最後部分指讀取哪個工作表。
     var url =
-      'https://docs.google.com/spreadsheets/d/1JeMh0SH3YS8jOfUAnJxhnQ2BWAhFG9iBCp1XEGdE6Ok/gviz/tq?sheet=ItalianRestaurant';
+      'https://docs.google.com/spreadsheets/d/1cB6a4F4soIDf8zOovv47nnYhJs_KESJKrInGyjJT-FQ/gviz/tq?sheet=工作表1';
     var query = new google.visualization.Query(url);
     query.setQuery('select *');
     query.send(processSheetsData);
@@ -57,7 +57,7 @@
     for (var r=1 ; r<rows ; r++) {
         title[r-1] = data.getFormattedValue(r,1);
         image[r-1] = data.getFormattedValue(r,2);
-        link[r-1] = data.getFormattedValue(r,3)
+        intro[r-1] = data.getFormattedValue(r,3)
         //str += data.getFormattedValue(r,0) + "(" +  data.getFormattedValue(r,1) + ")" + " 訂 " +  data.getFormattedValue(r,2) + " : " + data.getFormattedValue(r,3) + "個 <br />";
     }
     //document.getElementById("demo").innerHTML = str;
@@ -77,7 +77,7 @@
                  text += '    <span class="card-title">' + title[i] + '</span>'
                  text += '  </div>'
                  text += '  <div class="card-content">'
-                //  text += '    <p>' + intro[i].slice(0,80) + '.....</p>'
+                 text += '    <p>' + intro[i].slice(0,80) + '.....</p>'
                  text += '  </div>'
                  text += '  <div class="card-action">'
                  text += '    <a href="B.html?pid=' + i + '">This is a link</a>'

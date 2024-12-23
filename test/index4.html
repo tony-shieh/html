@@ -99,6 +99,7 @@
   // Declare global variables
   let title = [];
   let image = [];
+  let link = [];
   let intro = [];
 
   function init() {
@@ -115,7 +116,7 @@
     for (let r = 0; r < rows; r++) { // Adjusted loop start to 0
       title[r] = data.getFormattedValue(r, 0);
       image[r] = data.getFormattedValue(r, 1);
-      intro[r] = data.getFormattedValue(r, 2);
+      link[r] = data.getFormattedValue(r, 2);
     }
 
     // Call f() to render cards after data is loaded
@@ -135,7 +136,7 @@
       text += '    <p>' + intro[i].slice(0, 80) + '.....</p>';
       text += '  </div>';
       text += '  <div class="card-action">';
-      text += '    for more details:<br> <a href="' + intro[i] + '"> website of the restaurant</a>';
+      text += '    for more details:<br> <a href="' + link[i] + '"> website of the restaurant</a>';
 
       text += '   <br> <a href="response.html?pid=' + i + '"> full introduction</a>';
       text += '  </div>';

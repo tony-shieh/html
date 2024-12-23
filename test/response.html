@@ -3,7 +3,9 @@
 
 <head>
   <meta charset="UTF-8">
-  <!--Import Google Icon Font-->
+  <title>Google Sheets Data</title>
+
+  <!-- Import Google Icon Font -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
   <!-- Compiled and minified CSS -->
@@ -12,134 +14,86 @@
   <!-- Compiled and minified JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
-  <!--Let browser know website is optimized for mobile-->
+  <!-- Google Charts Loader -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <script>
-    function GetUrlVar(VarName) {
-      var regex = new RegExp("[?&]" + VarName + "=([^&#]*)", "i");
-      var results = regex.exec(window.location.href);
-      if (results == null) {
-        return "";
-      } else {
-        return results[1];
-      }
+    // Load the Google Visualization API and the corechart package
+    google.charts.load('current', { 'packages': ['corechart'] });
+
+    // Set a callback to run when the Google Visualization API is loaded
+    google.charts.setOnLoadCallback(init);
+
+    // Global variables to store fetched data
+    let title = [];
+    let image = [];
+    let intro = [];
+
+    function init() {
+      // Replace with your Google Sheet URL
+      const url = 'https://docs.google.com/spreadsheets/d/1JeMh0SH3YS8jOfUAnJxhnQ2BWAhFG9iBCp1XEGdE6Ok/gviz/tq?sheet=ItalianRestaurant';
+      const query = new google.visualization.Query(url);
+      query.setQuery('select *'); // Replace with the actual columns you need (A, B, C represent Title, Image, Intro)
+      query.send(processSheetsData);
     }
 
+    function processSheetsData(response) {
+      const data = response.getDataTable();
+      const rows = data.getNumberOfRows();
 
+      // Extract data from each row
+      for (let r = 0; r < rows; r++) {
+        title[r] = data.getValue(r, 0); // Column A: Title
+        image[r] = data.getValue(r, 1); // Column B: Image URL
+        intro[r] = data.getValue(r, 2); // Column C: Introduction
+      }
 
-    // https://developers.google.com/chart/interactive/docs/quick_start
-// Load the Visualization API and the corechart package.
-google.charts.load('current', {'packages':['corechart']});
+      // Call a function to display the data
+      displayData();
+    }
 
-// Set a callback to run when the Google Visualization API is loaded.	
-google.charts.setOnLoadCallback(init);
+    function displayData() {
+      let text = "";
 
+      for (let i = 0; i < title.length; i++) {
+        text += `
+          <div class="col s12 m6 l3">
+            <div class="card">
+              <div class="card-image">
+                <img src="${image[i]}" alt="${title[i]}">
+                <span class="card-title">${title[i]}</span>
+              </div>
+              <div class="card-content">
+                <p>${intro[i].slice(0, 80)}...</p>
+              </div>
+              <div class="card-action">
+                <a href="B.html?pid=${i}">Read More</a>
+              </div>
+            </div>
+          </div>`;
+      }
 
-// 這些陣列要移到所有function的外面，成為整體性變數
-title = [];
-image = [];
-intro = [];
-
-
-function init() {
-
-// 這個例子使用的試算表是 https://docs.google.com/spreadsheets/d/1QScI5d56Kh-LGywY4WR6EvRGPcalFQYUAdqMxbFVDvk/copy
-// 將上述試算表另存副本後，你要在自己的雲端硬碟將該試算表設定成[知道連結的使用者都能查看]。
-// 然後讓程式讀取 https://docs.google.com/spreadsheets/d/瀏覽器網址列上的網址擷取序號部分/gviz/tq?sheet=工作表名稱
-// 也就是將下列的 1cB6a4F4soIDf8zOovv47nnYhJs_KESJKrInGyjJT-FQ 更換成自己的檔案序號，以及最後部分指讀取哪個工作表。
-var url =
-'https://docs.google.com/spreadsheets/d/1JeMh0SH3YS8jOfUAnJxhnQ2BWAhFG9iBCp1XEGdE6Ok/gviz/tq?sheet=ItalianRestaurant';
-var query = new google.visualization.Query(url);
-query.setQuery('select *');
-query.send(processSheetsData);
-}	
-
-function processSheetsData(response) {
-var data = response.getDataTable();
-var columns = data.getNumberOfColumns();
-var rows = data.getNumberOfRows();
-
-//var str = "";
-for (var r=1 ; r<rows ; r++) {
-  title[r-1] = data.getFormattedValue(r,0);//(row, column)
-  image[r-1] = data.getFormattedValue(r,1);
-  intro[r-1] = data.getFormattedValue(r,2)
-  //str += data.getFormattedValue(r,0) + "(" +  data.getFormattedValue(r,1) + ")" + " 訂 " +  data.getFormattedValue(r,2) + " : " + data.getFormattedValue(r,3) + "個 <br />";
-}
-//document.getElementById("demo").innerHTML = str;
-}
-
-
-
-  let text = "";
-
-  //title = ["AAAA", "BBBB", "CCCC", "DDDD", "EEEE"];
-
-  for (let i = 0; i < title.length; i++) {			  
-       text += '<div class="col s12 m6 l3">'
-       text += '<div class="card">'
-       text += ' <div class="card-image">'
-       text += '   <img src="' + image[i] + '">'
-       text += '    <span class="card-title">' + title[i] + '</span>'
-       text += '  </div>'
-       text += '  <div class="card-content">'
-       text += '    <p>' + intro[i].slice(0,80) + '.....</p>'
-       text += '  </div>'
-       text += '  <div class="card-action">'
-      //  text += '    <a href="B.html?pid=' + i + '">This is a link</a>'
-       text += '    <p>' + intro[i].slice(0,80) + '.....</p>'
-       text += '  </div>'
-       text += ' </div>'
-       text += '</div>'      				
-  }
-
-//     // 測試數據
-//     pic = [
-//       "https://via.placeholder.com/150/0000FF/FFFFFF?text=Image+1",
-//       "https://via.placeholder.com/150/FF0000/FFFFFF?text=Image+2",
-//       "https://via.placeholder.com/150/00FF00/FFFFFF?text=Image+3"
-//     ];
-//     txt = [
-//       "This is the description for Image 1",
-//       "This is the description for Image 2",
-//       "This is the description for Image 3"
-//     ];
-//     map = [
-//       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8354345098567!2d144.95543161532172!3d-37.817209979751554!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d43e510f0b7%3A0x5045675218ce840!2sMelbourne%20VIC%2C%20Australia!5e0!3m2!1sen!2sin!4v1604896328241!5m2!1sen!2sin",
-//       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.8397550561264!2d144.9559244153218!3d-37.81545197975162!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d43e5132d8f%3A0x5045675218ce850!2sMelbourne%20City%20Library%2C%20Australia!5e0!3m2!1sen!2sin!4v1604896328241!5m2!1sen!2sin",
-//       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.839155860926!2d144.95582501532182!3d-37.81425297975165!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d43e5133d5b%3A0x5045675218ce860!2sMelbourne%20Central%2C%20Australia!5e0!3m2!1sen!2sin!4v1604896328241!5m2!1sen!2sin"
-//     ];
-//   </script>
-// </head>
-
-// <body>
-
-//   <div class="row">
-//     <div class="col s12 m6 l6" id="demo"></div>
-//     <div class="col s12 m6 l6 a" id="text"></div>
-//     <div class="col s12 m6 l6 a" id="map"></div>
-//   </div>
-
-//   <script>
-//     var id = GetUrlVar("id");
-//     var i = Number(id);
-
-//     if (!isNaN(i) && i < pic.length) {
-//       document.getElementById("demo").innerHTML = "<img src='" + pic[i] + "' width='100%'/>";
-//       document.getElementById("text").innerHTML = txt[i];
-//       document.getElementById("map").innerHTML = "<iframe src='" + map[i] + "' width='100%' height='300' frameborder='0' style='border:0;' allowfullscreen='' aria-hidden='false' tabindex='0'></iframe>";
-//     } else {
-//       document.getElementById("demo").innerHTML = "<p>Invalid ID</p>";
-//     }
+      // Add the content to the page
+      document.getElementById("demo").innerHTML = text;
+    }
   </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row" id="demo">
+      <!-- Dynamic content will be inserted here -->
+    </div>
+  </div>
 
   <footer class="e1bee7 purple lighten-4">
     <div class="container">
       <div class="row">
         <div class="col l6 s12">
-          <h5 class="white-text">歡迎光臨</h5>
-          <p class="grey-text text-lighten-4">To be continue...</p>
+          <h5 class="white-text">Welcome</h5>
+          <p class="grey-text text-lighten-4">To be continued...</p>
           <div class="col s12 m4 l6">
             <img src="https://image.shutterstock.com/image-vector/welcome-sign-colorful-bunting-flags-260nw-500112742.jpg" width="340%">
           </div>
@@ -152,7 +106,6 @@ for (var r=1 ; r<rows ; r++) {
       </div>
     </div>
   </footer>
-
 </body>
 
 </html>

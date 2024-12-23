@@ -112,7 +112,7 @@
     const data = response.getDataTable();
     const rows = data.getNumberOfRows();
 
-    for (let r = 1; r < rows; r++) { // Adjusted loop start to 0
+    for (let r = 0; r < rows; r++) { // Adjusted loop start to 0
       title[r] = data.getFormattedValue(r, 0);
       image[r] = data.getFormattedValue(r, 1);
       intro[r] = data.getFormattedValue(r, 2);
@@ -124,7 +124,7 @@
 
   function f() {
     let text = '';
-    for (let i = 0; i < title.length; i++) {
+    for (let i = 1; i < title.length; i++) {
       text += '<div class="col s12 m6 l3">';
       text += '<div class="card">';
       text += ' <div class="card-image">';

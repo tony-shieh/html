@@ -135,7 +135,7 @@ function processSheetsData(response) {
   }
 }
 
-  function f(){
+
     let text = "";
 
     for (let i = 0; i < title.length; i++) {			  
@@ -157,7 +157,31 @@ function processSheetsData(response) {
     }
     
     document.getElementById("demo").innerHTML += text;
-  }	
+  
+
+  // function f(){
+  //   let text = "";
+
+  //   for (let i = 0; i < title.length; i++) {			  
+  //        text += '<div class="col s12 m6 l3">'
+  //        text += '<div class="card">'
+  //        text += ' <div class="card-image">'
+  //        text += '   <img src="' + image[i] + '">'
+  //        text += '    <span class="card-title">' + title[i] + '</span>'
+  //        text += '  </div>'
+  //        text += '  <div class="card-content">'
+  //        text += '    <p>' + intro[i].slice(0,80) + '.....</p>'
+  //        text += '  </div>'
+  //        text += '  <div class="card-action">'
+  //        text += '    <a href="response.html?pid=' + i + '">This is a link</a>'
+  //        text += '    <p>' + intro[i].slice(0,80) + '.....</p>'
+  //        text += '  </div>'
+  //        text += ' </div>'
+  //        text += '</div>'      				
+  //   }
+    
+  //   document.getElementById("demo").innerHTML += text;
+  // }	
   </script>   	  
   </head>
 
@@ -176,7 +200,7 @@ function processSheetsData(response) {
        -->
 <div class="row" id="demo"></div>
                 
-<a href="javascript:f();">按這裡</a> 
+<!-- <a href="javascript:f();">按這裡</a>  -->
 <script>f()</script>
    
 <script type="text/javascript">

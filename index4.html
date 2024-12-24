@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Import Google Icon Font -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- Google Charts Loader -->
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <!-- Meta viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Restaurant Menu</title>
+
+    <style>
+      /* Hero Section Styling */
+      .hero {
+        background-image: url('https://source.unsplash.com/1600x900/?restaurant,food');
+        background-size: cover;
+        background-position: center;
+        height: 50vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+      }
+
+      /* Fix image size and maintain consistency */
+      .card-image {
+        height: 200px;
+        width: 100%;
+        overflow: hidden;
+      }
+
+      .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* Ensure that the content inside the card takes the remaining space */
+      .card-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .card-content p {
+        max-height: 4.5em;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navigation Bar -->
+    <nav>
+      <div class="nav-wrapper grey darken-4">
+        <a href="#" class="brand-logo center">Gourmet Bistro</a>
+        <ul id="nav-mobile" class="left hide-on-med-and-down">
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#reservation">Reserve</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+      <h1>Welcome to Gourmet Bistro</h1>
+    </div>
+
+    <!-- YouTube Video Embed Section -->
+    <div class="container">
+      <h3 class="center-align">Watch Our Special Video</h3>
+      <div class="video-container">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/GIwEnk3Wq2I" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <!-- Cards Section -->
+    <div class="row" id="demo"></div>
+<script>
+      google.charts.load('current', { packages: ['corechart'] });
+      google.charts.setOnLoadCallback(init);
+
+      // Declare global variables
+      let title = [];
+      let image = [];
+      let link = [];
+      let intro = [];
+
+      function init() {
+        const url =
+          'https://docs.google.com/spreadsheets/d/1fEE4VD_LgyOttC7j5ysIi_EXZFXMLUcWTFSCDmIDP2s/gviz/tq?tqx=out:json&tq=SELECT *&sheet=工作表1';
+        const query = new google.visualization.Query(url);
+        query.setQuery('SELECT A, B, C, D'); // Replace with your column names
+        query.send(processSheetsData);
+      }
+
+      function processSheetsData(response) {
+        const data = response.getDataTable();
+        const rows = data.getNumberOfRows();
+
+        for (let r = 1; r < rows; r++) { // 改成從第2列開始
+        title[r - 1] = data.getFormattedValue(r, 0); // r - 1 使陣列從索引 0 開始
+        image[r - 1] = data.getFormattedValue(r, 1);
+        link[r - 1] = data.getFormattedValue(r, 2);
+        intro[r - 1] = data.getFormattedValue(r, 3);
+  }
+
+        renderCards();
+      }
+
+      function renderCards() {
+        let text = '';
+        for (let i = 0; i < title.length; i++) {
+          text += `
+      <div class="col s12 m6 l3">
+        <div class="card">
+          <div class="card-image">
+            <img src="${image[i]}" alt="Image of ${title[i]}" width="200" height="200">
+            <span class="card-title">${title[i]}</span>
+          </div>
+          <div class="card-content">
+            <p>${intro[i].slice(0, 80)}...</p>
+          </div>
+          <div class="card-action">
+            <a href="${link[i]}" target="_blank">Official Website</a><br>
+            <a href="response.html?id=${i}" target="_blank">more info</a>
+          </div>
+        </div>
+      </div>
+    `;
+        }
+        document.getElementById("demo").innerHTML = text;
+      }
+    </script>
+    
+
+    <!-- Form -->
+    <form name="form1" action="javascript:formresponse();">
+      name: <input type="text" name="name" /><br />
+      response: <input type="text" name="response" /><br />
+      <input type="submit" value="Submit" />
+    </form>
+
+    <script>
+      function formresponse() {
+        var m = document.forms['form1']['name'].value;
+        var d = document.forms['form1']['response'].value;
+        var submitButton = document.querySelector('input[type="submit"]');
+
+        if (m == null || m == '') {
+          alert('Name不可為空白!');
+          return false;
+        } else if (d == null || d == '') {
+          alert('Response不可為空白!');
+          return false;
+        } else {
+          submitButton.disabled = true;
+          submitButton.value = 'Submitting...';
+
+          var MySubmit =
+            'https://docs.google.com/forms/d/e/1FAIpQLSeyV7cQB95TtCDe_9etU1OjpTsuJrLgKySZnV1mk6GAxNKW-w/formResponse?usp=pp_url&entry.1196881293=' +
+            encodeURIComponent(m) +
+            '&entry.526714013=' +
+            encodeURIComponent(d);
+
+          window.open(MySubmit);
+        }
+      }
+    </script>
+
+    <!-- Footer Section -->
+    <footer id="contact" class="page-footer grey darken-3">
+      <div class="container">
+        <div class="row">
+          <div class="col s12 m6">
+            <h5 class="white-text">Gourmet Bistro</h5>
+            <p class="grey-text text-lighten-4">The best dining experience in the city!</p>
+          </div>
+          <div class="col s12 m6">
+            <h5 class="white-text">Contact Us</h5>
+            <p class="grey-text text-lighten-4">
+              <i class="material-icons left">phone</i> 0912345678<br />
+              <i class="material-icons left">email</i> info@gourmetbistro.com<br />
+              <i class="material-icons left">place</i> Taichung, 123 Main Street
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

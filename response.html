@@ -1,0 +1,151 @@
+<html>
+	<head>
+	<!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	<title>MLB</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link href="../layout/styles/layout.css" rel="stylesheet" type="text/css" media="all">
+	<script type="text/javascript">
+			
+			// 取得網址裡的參數 
+			function GetUrlVar(VarName) 
+			{
+			  name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+			  var regexS = "[\\?&]" + VarName + "=([^&#]*)";
+			  var regex = new RegExp(regexS);
+			  var results = regex.exec(window.location.href);
+			  if (results == null)
+				 return "";
+			  else
+				 return results[1];
+			}
+
+		</script>
+		<!-- 利用Google Visualization讀取Google Sheet https://www.labnol.org/code/google-sheet-d3js-visualization-200608 -->
+		<script src="https://www.gstatic.com/charts/loader.js"></script>
+		
+		<script>
+		
+		// https://developers.google.com/chart/interactive/docs/quick_start
+		// Load the Visualization API and the corechart package.
+		google.charts.load('current', {'packages':['corechart']});
+
+		// Set a callback to run when the Google Visualization API is loaded.	
+		google.charts.setOnLoadCallback(init);
+
+		function init() {
+		  // 這個例子使用的試算表是 https://docs.google.com/spreadsheets/d/1QScI5d56Kh-LGywY4WR6EvRGPcalFQYUAdqMxbFVDvk/copy
+		  // 將上述試算表另存副本後，你要在自己的雲端硬碟將該試算表設定成[知道連結的使用者都能查看]。
+		  // 然後讓程式讀取 https://docs.google.com/spreadsheets/d/瀏覽器網址列上的網址擷取序號部分/gviz/tq?sheet=工作表名稱
+		  // 也就是將下列的 1QScI5d56Kh-LGywY4WR6EvRGPcalFQYUAdqMxbFVDvk 更換成自己的檔案序號，以及最後部分指讀取哪個工作表。
+		  var url =
+			'https://docs.google.com/spreadsheets/d/1fEE4VD_LgyOttC7j5ysIi_EXZFXMLUcWTFSCDmIDP2s/edit?gid=757892141#gid=757892141/gviz/tq?sheet=工作表2';
+		  var query = new google.visualization.Query(url);
+		  query.setQuery('select *');
+		  query.send(processSheetsData);
+		}	  			 
+			
+		
+	</script>
+
+
+
+
+
+	</head>
+<body>
+	<nav>
+      <div class="nav-wrapper indigo darken-3">
+        <a href="#" class="brand-logo">MLB美國職棒大聯盟</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li><a href="https://4110029036.netlify.app/">返回主頁</></a></li>
+          </ul>     
+      </div>
+	  </nav>
+    
+	
+	
+
+
+
+<div class="wrapper row2">
+  <div id="breadcrumb" class="clear">
+    
+  </div>
+</div>
+
+<div class="wrapper row3">
+<main class="container clear"> 
+    <!-- main body -->
+    
+    <div id="content"> 
+      
+	</div> 
+	
+
+      
+        
+    </div>
+      
+    </div>
+	<div class = "container" id = "qq87">
+	 </div>
+	
+    <!-- / main body -->
+    <div class="clear"></div>
+	
+  </main>
+
+
+<!-- JAVASCRIPTS -->
+<script src="../layout/scripts/jquery.min.js"></script>
+<script src="../layout/scripts/jquery.mobilemenu.js"></script>
+</body>
+<script>
+ 
+    img=[];   
+	team=[ ];
+    establish=[];     
+    WS=[];
+	home=[];
+	field=[];
+	  
+  
+  
+  function processSheetsData(response)
+  {
+	  var data = response.getDataTable();
+	  var columns = data.getNumberOfColumns();
+	  var rows = data.getNumberOfRows();
+	  
+	  
+  for (var r=0 ; r<rows ; r++) {
+       img[r] = data.getFormattedValue(r,0);
+	   team[r] = data.getFormattedValue(r,1);
+	   establish[r] = data.getFormattedValue(r,2);
+	   WS[r] = data.getFormattedValue(r,3);
+	   home[r] = data.getFormattedValue(r,4);
+	   field[r] = data.getFormattedValue(r,5)
+	   }
+	   
+	   
+	var X = decodeURIComponent(GetUrlVar('id'));
+	var i = Number(X);
+	var str = "";
+    str += "<img src='" + img[i] + "' width='80%' height='80%'/>";
+    str += '<br><p>隊名 : '+team[i]+'</p>';
+    str += '    <p>創隊年份 : '+establish[i]+'</p>';
+    str += '    <p>世界大賽冠軍數 : '+WS[i]+'</p>';
+    str += '    <p>主場 : '+home[i]+'</p>';
+	str += '<iframe width = "100%" height = "300" src ="https://maps.google.com.tw/maps?f=q&h1=zh-TW&q=' + field[i] + '&z=16&t=q&output=embed"></iframe>'
+	  
+	document.getElementById("content").innerHTML = str;
+	}
+    </script>

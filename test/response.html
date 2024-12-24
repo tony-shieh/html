@@ -20,6 +20,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <script>
+
+// 取得網址裡的參數 
+  function GetUrlVar(VarName) 
+  {
+    name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+    var regexS = "[\\?&]" + VarName + "=([^&#]*)";
+    var regex = new RegExp(regexS);
+    var results = regex.exec(window.location.href);
+    if (results == null)
+       return "";
+    else
+    return results[1];
+  }
+
+    
+    // 要先取得網址裡的路徑起點終點經緯度參數 
     // Load the Google Visualization API and the corechart package
     google.charts.load('current', { 'packages': ['corechart'] });
 
@@ -57,27 +73,12 @@
     function displayData() {
       let text = "";
 
-      for (let i = 0; i < title.length; i++) {
-        text += `
-          <div class="col s12 m6 l3">
-            <div class="card">
-              <div class="card-image">
-                <img src="${image[i]}" alt="${title[i]}">
-                <span class="card-title">${title[i]}</span>
-              </div>
-              <div class="card-content">
-                <p>${intro[i].slice(0, 80)}...</p>
-              </div>
-              <div class="card-action">
-                <a href="B.html?pid=${i}">Read More</a>
-              </div>
-            </div>
-          </div>`;
-      }
-
-      // Add the content to the page
-      document.getElementById("demo").innerHTML = text;
-    }
+      			var Y = decodeURIComponent(GetUrlVar('pid'));
+			
+			text += '<h1>' + title[Y] + '</h1>';
+			text += '<img src="' + image[Y] + '">';
+			
+			document.getElementById("demo").innerHTML += text;
   </script>
 </head>
 

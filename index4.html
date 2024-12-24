@@ -15,44 +15,34 @@
     <title>Restaurant Menu</title>
 
     <style>
-      /* Hero Section Styling */
+      /* Hero Section */
       .hero {
-        background-image: url('https://source.unsplash.com/1600x900/?restaurant,food');
-        background-size: cover;
-        background-position: center;
-        height: 50vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-      }
-
-      /* Fix image size and maintain consistency */
-      .card-image {
-        height: 200px;
+        position: relative; /* 確保文字能疊加在圖片上 */
         width: 100%;
-        overflow: hidden;
-      }
-
-      .card-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-
-      /* Ensure that the content inside the card takes the remaining space */
-      .card-content {
-        flex-grow: 1;
+        height: 50vh; /* 設定 Hero 高度，可以調整 */
         display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+        justify-content: center; /* 水平置中 */
+        align-items: center; /* 垂直置中 */
+        overflow: hidden; /* 防止溢出 */
       }
-
-      .card-content p {
-        max-height: 4.5em;
-        overflow: hidden;
-        text-overflow: ellipsis;
+    
+      .hero-image {
+        position: absolute; /* 讓圖片佔滿 Hero 並作為背景 */
+        top: 0;
+        left: 0;
+        width: 100%; /* 使圖片寬度覆蓋容器 */
+        height: 100%; /* 使圖片高度覆蓋容器 */
+        object-fit: cover; /* 確保圖片比例不變 */
+        z-index: -1; /* 讓圖片在文字下方 */
+      }
+    
+      .hero-title {
+        position: relative; /* 保持文字在圖片上 */
+        color: white; /* 文字顏色 */
+        font-size: 2.5rem; /* 可依需求調整文字大小 */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* 增強可讀性 */
+        text-align: center; /* 文字置中 */
+        margin: 0; /* 移除預設邊距 */
       }
     </style>
   </head>
@@ -63,17 +53,19 @@
       <div class="nav-wrapper grey darken-4">
         <a href="#" class="brand-logo center">Gourmet Bistro</a>
         <ul id="nav-mobile" class="left hide-on-med-and-down">
-          <li><a href="#menu">Menu</a></li>
-          <li><a href="#reservation">Reserve</a></li>
+          <li><a href="https://www.instagram.com/tony_eating/profilecard/?igsh=MXdhZWR2aHNnMjZuaQ==">Instagram</a></li>
+          <!-- <li><a href="#reservation">Reserve</a></li> -->
           <li><a href="#contact">Contact Us</a></li>
         </ul>
       </div>
     </nav>
 
-    <!-- Hero Section -->
     <div class="hero">
-      <h1>Welcome to Gourmet Bistro</h1>
+      <img src="https://farm8.staticflickr.com/7421/14064705656_4e58a45502_c.jpg" alt="Gourmet Bistro" class="hero-image">
+      <h1 class="hero-title">Welcome to Gourmet Bistro</h1>
     </div>
+    
+
 
     <!-- YouTube Video Embed Section -->
     <div class="container">

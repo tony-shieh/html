@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Google Sheets Data</title>
+
+  <!-- Import Google Icon Font -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+  <!-- Google Charts Loader -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <script>
+    // Load the Google Visualization API and the corechart package
+    google.charts.load('current', { 'packages': ['corechart'] });
+
+    // Set a callback to run when the Google Visualization API is loaded
+    google.charts.setOnLoadCallback(init);
+
+    // Global variables to store fetched data
+    let title = [];
+    let image = [];
+    let intro = [];
+
+    function init() {
+      // Replace with your Google Sheet URL
+      const url = 'https://docs.google.com/spreadsheets/d/1JeMh0SH3YS8jOfUAnJxhnQ2BWAhFG9iBCp1XEGdE6Ok/gviz/tq?sheet=ItalianRestaurant';
+      const query = new google.visualization.Query(url);
+      query.setQuery('select *'); // Replace with the actual columns you need (A, B, C represent Title, Image, Intro)
+      query.send(processSheetsData);
+    }
+
+    function processSheetsData(response) {
+      const data = response.getDataTable();
+      const rows = data.getNumberOfRows();
+
+      // Extract data from each row
+      for (let r = 0; r < rows; r++) {
+        title[r] = data.getValue(r, 0); // Column A: Title
+        image[r] = data.getValue(r, 1); // Column B: Image URL
+        intro[r] = data.getValue(r, 3); // Column C: Introduction
+      }
+
+      // Call a function to display the data
+      displayData();
+    }
+
+    function displayData() {
+      let text = "";
+
+      for (let i = 0; i < title.length; i++) {
+        text += `
+          <div class="col s12 m6 l3">
+            <div class="card">
+              <div class="card-image">
+                <img src="${image[i]}" alt="${title[i]}">
+                <span class="card-title">${title[i]}</span>
+              </div>
+              <div class="card-content">
+                <p>${intro[i].slice(0, 80)}...</p>
+              </div>
+              <div class="card-action">
+                <a href="B.html?pid=${i}">Read More</a>
+              </div>
+            </div>
+          </div>`;
+      }
+
+      // Add the content to the page
+      document.getElementById("demo").innerHTML = text;
+    }
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row" id="demo">
+      <!-- Dynamic content will be inserted here -->
+    </div>
+  </div>
+
+  <footer class="e1bee7 purple lighten-4">
+    <div class="container">
+      <div class="row">
+        <div class="col l6 s12">
+          <h5 class="white-text">Welcome</h5>
+          <p class="grey-text text-lighten-4">To be continued...</p>
+          <div class="col s12 m4 l6">
+            <img src="https://image.shutterstock.com/image-vector/welcome-sign-colorful-bunting-flags-260nw-500112742.jpg" width="340%">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-copyright">
+      <div class="container">
+        © 2021 Copyright
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

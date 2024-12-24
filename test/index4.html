@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -99,6 +100,7 @@
   // Declare global variables
   let title = [];
   let image = [];
+  let link = [];
   let intro = [];
 
   function init() {
@@ -112,10 +114,12 @@
     const data = response.getDataTable();
     const rows = data.getNumberOfRows();
 
-    for (let r = 1; r < rows; r++) { // Adjusted loop start to 0
+    for (let r = 0; r < rows; r++) { // Adjusted loop start to 0
       title[r] = data.getFormattedValue(r, 0);
       image[r] = data.getFormattedValue(r, 1);
-      intro[r] = data.getFormattedValue(r, 2);
+      link[r] = data.getFormattedValue(r, 2);
+      intro[r] = data.getFormattedValue(r, 3);
+      
     }
 
     // Call f() to render cards after data is loaded
@@ -124,7 +128,7 @@
 
   function f() {
     let text = '';
-    for (let i = 0; i < title.length; i++) {
+    for (let i = 1; i < title.length; i++) {
       text += '<div class="col s12 m6 l3">';
       text += '<div class="card">';
       text += ' <div class="card-image">';
@@ -135,7 +139,8 @@
       text += '    <p>' + intro[i].slice(0, 80) + '.....</p>';
       text += '  </div>';
       text += '  <div class="card-action">';
-      text += '    <a href="response.html?pid=' + i + '">This is a link</a>';
+      text += '    <a href="' + link[i] + '">official website</a> <br>';
+      text += '    <a href="response.html?pid=' + i + '">more info</a>';
       text += '  </div>';
       text += ' </div>';
       text += '</div>';
@@ -149,7 +154,9 @@
     
 <div class="row" id="demo"></div>
                 
-<a href="javascript:f();">按這裡</a> 
+<!-- <a href="javascript:f();">按這裡</a>  -->
+
+   
 
 <!-- form -->
 <script type="text/javascript">

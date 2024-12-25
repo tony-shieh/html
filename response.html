@@ -2,13 +2,13 @@
 	<head>
 	<!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<title>Details of the restaurant</title>
+
     <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-	
+	<title>Details of the restaurant</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<link href="../layout/styles/layout.css" rel="stylesheet" type="text/css" media="all">
@@ -55,10 +55,6 @@
 		
 	</script>
 
-
-
-
-
 	</head>
 <body>
 	<nav>
@@ -69,12 +65,6 @@
           </ul>     
       </div>
 	  </nav>
-    
-	
-	
-
-
-
 <div class="wrapper row2">
   <div id="breadcrumb" class="clear">
     
@@ -88,10 +78,7 @@
     <div id="content"> 
       
 	</div> 
-	
 
-      
-        
     </div>
       
     </div>
@@ -99,10 +86,8 @@
 	 </div>
 	
     <!-- / main body -->
-    <div class="clear"></div>
-	
+    <div class="clear"></div>	
   </main>
-
 
 <!-- JAVASCRIPTS -->
 <script src="../layout/scripts/jquery.min.js"></script>
@@ -113,37 +98,37 @@
     img=[];   
 	team=[ ];
     establish=[];     
-    WS=[];
+    rate=[];
 	home=[];
 	field=[];
+  intro1 = [];
 	  
-  
-  
   function processSheetsData(response)
   {
 	  var data = response.getDataTable();
 	  var columns = data.getNumberOfColumns();
 	  var rows = data.getNumberOfRows();
-	  
-	  
+	    
   for (var r=0 ; r<rows ; r++) {
        img[r] = data.getFormattedValue(r,0);
 	   team[r] = data.getFormattedValue(r,1);
 	   establish[r] = data.getFormattedValue(r,2);
-	   WS[r] = data.getFormattedValue(r,3);
+	   rate[r] = data.getFormattedValue(r,3);
 	   home[r] = data.getFormattedValue(r,4);
-	   field[r] = data.getFormattedValue(r,5)
+	   field[r] = data.getFormattedValue(r,5);
+     intro1[r] = data.getFormattedValue(r,6);
 	   }
-	   
-	   
+	      
 	var X = decodeURIComponent(GetUrlVar('id'));
 	var i = Number(X);
 	var str = "";
     str += "<img src='" + img[i] + "' width='80%' height='80%'/>";
     str += '<br><p>Restaurant Name : '+team[i]+'</p>';
-    str += '    <p>創隊年份 : '+establish[i]+'</p>';
-    str += '    <p>世界大賽冠軍數 : '+WS[i]+'</p>';
-    str += '    <p>主場 : '+home[i]+'</p>';
+    str += '    <p>創店年份 : '+establish[i]+'</p>';
+    str += '    <p>評分 : '+rate[i]+'</p>';
+    
+     str += '    <p>介紹 : '+intro1[i]+'</p>';
+     str += '    <p>地點 : '+home[i]+'</p>';
 	str += '<iframe width = "100%" height = "300" src ="https://maps.google.com.tw/maps?f=q&h1=zh-TW&q=' + field[i] + '&z=16&t=q&output=embed"></iframe>'
 	  
 	document.getElementById("content").innerHTML = str;

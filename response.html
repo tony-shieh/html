@@ -12,6 +12,40 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 	<link href="../layout/styles/layout.css" rel="stylesheet" type="text/css" media="all">
+
+<style>
+      body {
+        font-family: 'Roboto', sans-serif;
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+      }
+
+      main {
+        margin-top: 80px;
+        padding: 20px;
+      }
+
+      #content img {
+        display: block;
+        margin: 20px auto;
+        border-radius: 10px;
+      }
+
+      iframe {
+        border: 0;
+        border-radius: 10px;
+      }
+
+      footer {
+        padding-top: 20px;
+      }
+    </style>
+
 	<script type="text/javascript">
 			
 			// 取得網址裡的參數 
@@ -141,6 +175,7 @@
 	var X = decodeURIComponent(GetUrlVar('id'));
 	var i = Number(X);
 	var str = "";
+		 str += "<br><br><br>";
     str += "<img src='" + img[i] + "' width='80%' height='80%'/>";
     str += '<br><p>Restaurant Name : '+team[i]+'</p>';
     str += '    <p>Established Year : '+establish[i]+'</p>';

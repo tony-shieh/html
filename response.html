@@ -1,165 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <!-- Import Google Icon Font -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<html>
+	<head>
+	<!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-  <!-- Compiled and minified CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
-  <!-- Compiled and minified JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+	<title>Details of the restaurant</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<link href="../layout/styles/layout.css" rel="stylesheet" type="text/css" media="all">
+	<script type="text/javascript">
+			
+			// 取得網址裡的參數 
+			function GetUrlVar(VarName) 
+			{
+			  name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+			  var regexS = "[\\?&]" + VarName + "=([^&#]*)";
+			  var regex = new RegExp(regexS);
+			  var results = regex.exec(window.location.href);
+			  if (results == null)
+				 return "";
+			  else
+				 return results[1];
+			}
 
-  <title>Details of the Restaurant</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  
-  <!-- Custom Styles -->
-  <style>
-    /* Hero Section */
-    .hero {
-      position: relative;
-      width: 100%;
-      height: 50vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-    }
+		</script>
+		<!-- 利用Google Visualization讀取Google Sheet https://www.labnol.org/code/google-sheet-d3js-visualization-200608 -->
+		<script src="https://www.gstatic.com/charts/loader.js"></script>
+		
+		<script>
+		
+		// https://developers.google.com/chart/interactive/docs/quick_start
+		// Load the Visualization API and the corechart package.
+		google.charts.load('current', {'packages':['corechart']});
 
-    .hero-image {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: -1;
-    }
+		// Set a callback to run when the Google Visualization API is loaded.	
+		google.charts.setOnLoadCallback(init);
 
-    .hero-title {
-      position: relative;
-      color: white;
-      font-size: 2.5rem;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
-      text-align: center;
-      margin: 0;
-    }
+		function init() {
+		  // 這個例子使用的試算表是 https://docs.google.com/spreadsheets/d/1QScI5d56Kh-LGywY4WR6EvRGPcalFQYUAdqMxbFVDvk/copy
+		  // 將上述試算表另存副本後，你要在自己的雲端硬碟將該試算表設定成[知道連結的使用者都能查看]。
+		  // 然後讓程式讀取 https://docs.google.com/spreadsheets/d/瀏覽器網址列上的網址擷取序號部分/gviz/tq?sheet=工作表名稱
+		  // 也就是將下列的 1QScI5d56Kh-LGywY4WR6EvRGPcalFQYUAdqMxbFVDvk 更換成自己的檔案序號，以及最後部分指讀取哪個工作表。
+		  var url =
+			'https://docs.google.com/spreadsheets/d/1fEE4VD_LgyOttC7j5ysIi_EXZFXMLUcWTFSCDmIDP2s/edit?gid=757892141#gid=757892141/gviz/tq?sheet=工作表2';
+		  var query = new google.visualization.Query(url);
+		  query.setQuery('select *');
+		  query.send(processSheetsData);
+		}	  			 
+			
+		
+	</script>
 
-    .container {
-      margin-top: 30px;
-    }
-
-    iframe {
-      border: 0;
-    }
-  </style>
-</head>
-
+	</head>
 <body>
-  <!-- Navigation Bar -->
-  <nav>
-    <div class="nav-wrapper indigo darken-3">
-      <a href="#" class="brand-logo">Italian Restaurant</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><a href="https://tony-shieh.github.io/html/index4.html">Home</a></li>
-      </ul>     
-    </div>
-  </nav>
-
-  <!-- Hero Section -->
-  <div class="hero">
-    <img src="https://farm8.staticflickr.com/7421/14064705656_4e58a45502_c.jpg" alt="Restaurant" class="hero-image">
-    <h1 class="hero-title">Restaurant Details</h1>
-  </div>
-
-  <!-- Main Content -->
-  <div class="container">
-    <div id="content"></div>
-  </div>
-
-  <!-- Footer Section -->
-  <footer class="page-footer grey darken-3">
-    <div class="container">
-      <div class="row">
-        <div class="col s12 m6">
-          <h5 class="white-text">Italian Restaurant</h5>
-          <p class="grey-text text-lighten-4">The best dining experience in the city!</p>
-        </div>
-        <div class="col s12 m6">
-          <h5 class="white-text">Contact Us</h5>
-          <p class="grey-text text-lighten-4">
-            <i class="material-icons left">phone</i> 0912345678<br />
-            <i class="material-icons left">email</i> info@italianrestaurant.com<br />
-            <i class="material-icons left">place</i> Taichung, 123 Main Street
-          </p>
-        </div>
+	<nav>
+      <div class="nav-wrapper indigo darken-3">
+        <a href="#" class="brand-logo">Italian Restaurant</a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+           <li><a href="https://tony-shieh.github.io/html/index4.html">Home</a></li>
+          </ul>     
       </div>
-    </div>
-  </footer>
-
-  <!-- Scripts -->
-  <script src="../layout/scripts/jquery.min.js"></script>
-  <script src="../layout/scripts/jquery.mobilemenu.js"></script>
-
-  <script>
-    // Data storage arrays
-    let img = [], team = [], establish = [], rate = [], home = [], field = [], intro1 = [];
-
-    function processSheetsData(response) {
-      var data = response.getDataTable();
-      var rows = data.getNumberOfRows();
-
-      // Fetch data from Google Sheets
-      for (var r = 0; r < rows; r++) {
-        img[r] = data.getFormattedValue(r, 0);
-        team[r] = data.getFormattedValue(r, 1);
-        establish[r] = data.getFormattedValue(r, 2);
-        rate[r] = data.getFormattedValue(r, 3);
-        home[r] = data.getFormattedValue(r, 4);
-        field[r] = data.getFormattedValue(r, 5);
-        intro1[r] = data.getFormattedValue(r, 6);
-      }
-
-      // Get restaurant ID from URL
-      var X = decodeURIComponent(GetUrlVar('id'));
-      var i = Number(X);
-      var str = "";
-      
-      // Create content dynamically
-      str += "<img src='" + img[i] + "' width='80%' height='80%'/>"; 
-      str += '<br><p>Restaurant Name: ' + team[i] + '</p>';
-      str += '<p>Established Year: ' + establish[i] + '</p>';
-      str += '<p>Rate: ' + rate[i] + '</p>';
-      str += '<p>Introduction: ' + intro1[i] + '</p>';
-      str += '<p>Location: ' + home[i] + '</p>';
-      str += '<iframe width="100%" height="300" src="https://maps.google.com.tw/maps?f=q&h1=zh-TW&q=' + field[i] + '&z=16&t=q&output=embed"></iframe>';
-
-      document.getElementById("content").innerHTML = str;
-    }
-
-    // Fetch the Google Sheets data
-    google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(init);
-
-    function init() {
-      var url = 'https://docs.google.com/spreadsheets/d/1fEE4VD_LgyOttC7j5ysIi_EXZFXMLUcWTFSCDmIDP2s/gviz/tq?sheet=工作表2';
-      var query = new google.visualization.Query(url);
-      query.setQuery('select *');
-      query.send(processSheetsData);
-    }
+	  </nav>
+<div class="wrapper row2">
+  <div id="breadcrumb" class="clear">
     
-    // Utility function to get URL parameter
-    function GetUrlVar(VarName) {
-      var name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-      var regexS = "[\\?&]" + VarName + "=([^&#]*)";
-      var regex = new RegExp(regexS);
-      var results = regex.exec(window.location.href);
-      if (results == null)
-        return "";
-      else
-        return results[1];
-    }
-  </script>
+  </div>
+</div>
+
+<div class="wrapper row3">
+<main class="container clear"> 
+    <!-- main body -->
+    
+    <div id="content"> 
+      
+	</div> 
+
+    </div>
+      
+    </div>
+	<div class = "container" id = "qq87">
+	 </div>
+	
+    <!-- / main body -->
+    <div class="clear"></div>	
+  </main>
+
+<!-- JAVASCRIPTS -->
+<script src="../layout/scripts/jquery.min.js"></script>
+<script src="../layout/scripts/jquery.mobilemenu.js"></script>
 </body>
-</html>
+<script>
+ 
+    img=[];   
+	team=[ ];
+    establish=[];     
+    rate=[];
+	home=[];
+	field=[];
+  intro1 = [];
+	  
+  function processSheetsData(response)
+  {
+	  var data = response.getDataTable();
+	  var columns = data.getNumberOfColumns();
+	  var rows = data.getNumberOfRows();
+	    
+  for (var r=0 ; r<rows ; r++) {
+       img[r] = data.getFormattedValue(r,0);
+	   team[r] = data.getFormattedValue(r,1);
+	   establish[r] = data.getFormattedValue(r,2);
+	   rate[r] = data.getFormattedValue(r,3);
+	   home[r] = data.getFormattedValue(r,4);
+	   field[r] = data.getFormattedValue(r,5);
+     intro1[r] = data.getFormattedValue(r,6);
+	   }
+	      
+	var X = decodeURIComponent(GetUrlVar('id'));
+	var i = Number(X);
+	var str = "";
+    str += "<img src='" + img[i] + "' width='80%' height='80%'/>";
+    str += '<br><p>Restaurant Name : '+team[i]+'</p>';
+    str += '    <p>Established Year : '+establish[i]+'</p>';
+    str += '    <p>Rate : '+rate[i]+'</p>';
+     str += '    <p>Introduction : '+intro1[i]+'</p>';
+     str += '    <p>Location : '+home[i]+'</p>';
+	str += '<iframe width = "100%" height = "300" src ="https://maps.google.com.tw/maps?f=q&h1=zh-TW&q=' + field[i] + '&z=16&t=q&output=embed"></iframe>'
+	  
+	document.getElementById("content").innerHTML = str;
+	}
+    </script>
+    

@@ -123,12 +123,11 @@
 	var i = Number(X);
 	var str = "";
     str += "<img src='" + img[i] + "' width='80%' height='80%'/>";
-    str += '<br><p>店名 : '+team[i]+'</p>';
-    str += '    <p>創店年份 : '+establish[i]+'</p>';
-    str += '    <p>評分 : '+rate[i]+'</p>';
-    
-     str += '    <p>介紹 : '+intro1[i]+'</p>';
-     str += '    <p>地點 : '+home[i]+'</p>';
+    str += '<br><p>Restaurant Name : '+team[i]+'</p>';
+    str += '    <p>Established Year : '+establish[i]+'</p>';
+    str += '    <p>Rate : '+rate[i]+'</p>';
+     str += '    <p>Introduction : '+intro1[i]+'</p>';
+     str += '    <p>Location : '+home[i]+'</p>';
 	str += '<iframe width = "100%" height = "300" src ="https://maps.google.com.tw/maps?f=q&h1=zh-TW&q=' + field[i] + '&z=16&t=q&output=embed"></iframe>'
 	  
 	document.getElementById("content").innerHTML = str;

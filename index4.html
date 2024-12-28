@@ -88,17 +88,14 @@
   </head>
 
   <body>
-    <!-- Navigation Bar -->
-    <nav>
+ <!-- Navigation Bar -->
+<nav>
   <div class="nav-wrapper grey darken-4">
     <a href="#" class="brand-logo center">Gourmet Bistro</a>
-    
     <!-- Hamburger menu trigger for mobile view -->
     <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-    
-    <ul id="nav-mobile" class="left hide-on-med-and-down">
+    <ul id="nav-mobile" class="right hide-on-med-and-down">
       <li><a href="https://www.instagram.com/tony_eating/profilecard/?igsh=MXdhZWR2aHNnMjZuaQ==">Instagram</a></li>
-      <!-- <li><a href="#reservation">Reserve</a></li> -->
       <li><a href="#contact">Contact Us</a></li>
     </ul>
   </div>
@@ -109,6 +106,14 @@
   <li><a href="https://www.instagram.com/tony_eating/profilecard/?igsh=MXdhZWR2aHNnMjZuaQ==">Instagram</a></li>
   <li><a href="#contact">Contact Us</a></li>
 </ul>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems);
+  });
+</script>
+
 
     <div class="hero">
       <img src="https://farm8.staticflickr.com/7421/14064705656_4e58a45502_c.jpg" alt="Gourmet Bistro" class="hero-image">
